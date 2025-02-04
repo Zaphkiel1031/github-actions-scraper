@@ -1,29 +1,27 @@
 import requests
 from bs4 import BeautifulSoup
 
+# Yahoo Finance 頭條新聞網址
 URL = "https://finance.yahoo.com/"
 
-def scrape_yahoo_finance():
-    response = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, "html.parser")
-        
-        headlines = []
-        for item in soup.select("h3 a"):  # Yahoo Finance 的新聞標題
-            title = item.text.strip()
-            link = item["href"]
-            full_link = f"https://finance.yahoo.com{link}" if link.startswith("/") else link
-            headlines.append(f"{title} - {full_link}")
+# 發送 HTTP GET 請求
+response = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
 
-        # 儲存結果
-        with open("headlines.txt", "w", encoding="utf-8") as f:
-            for headline in headlines[:10]:  # 只取前 10 則
-                f.write(headline + "\n")
+# 檢查請求是否成功
+if response.status_code == 200:
+    soup = BeautifulSoup(response.text, "html.parser")
 
-        print("✅ 爬取完成，已存入 headlines.txt")
+    # 抓取所有新聞標題
+    headlines = soup.select("h3 a")  # Yahoo Finance 的新聞標題通常位於 <h3> 下的 <a> 標籤
 
-    else:
-        print("❌ 爬取失敗，狀態碼:", response.status_code)
+    # 儲存標題到 headlines.txt
+    with open("headlines.txt", "w", encoding="utf-8") as f:
+        for headline in headlines:
+            title = headline.text.strip()
+            link = "https://finance.yahoo.com" + headline["href"]
+            f.write(f"{title}\n{link}\n\n")
 
-if __name__ == "__main__":
-    scrape_yahoo_finance()
+    print("✅ 成功抓取 Yahoo Finance 頭條新聞！")
+
+else:
+    print(f"❌ 無法取得網頁，狀態碼: {response.status_code}")
