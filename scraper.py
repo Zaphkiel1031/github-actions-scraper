@@ -12,8 +12,8 @@ response = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
 if response.status_code == 200:
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Yahoo Finance "News" 頁面的新聞標題通常在 <h3> 下的 <a> 標籤
-    headlines = soup.select("h3 a")
+    # 嘗試抓取真正的新聞標題
+    headlines = soup.select('li.js-stream-content h3 a')
 
     # 儲存標題到 headlines.txt
     with open("headlines.txt", "w", encoding="utf-8") as f:
