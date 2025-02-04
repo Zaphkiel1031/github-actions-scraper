@@ -1,0 +1,5 @@
+News - https://www.yahoo.com/
+Life - https://www.yahoo.com/lifestyle/
+Entertainment - https://www.yahoo.com/entertainment/
+Finance - https://finance.yahoo.com/
+Sports - https://sports.yahoo.com/
