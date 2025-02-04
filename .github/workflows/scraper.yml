@@ -21,8 +21,8 @@ jobs:
       - name: 📦 安裝 `feedparser`
         run: pip install feedparser
 
-      - name: 📰 執行 `scraping.py`
-        run: python scraping.py
+      - name: 📰 執行 `scraper.py`
+        run: python scraper.py
 
       - name: 🔄 檢查是否有變更
         run: |
