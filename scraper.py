@@ -1,32 +1,23 @@
-import requests
-from bs4 import BeautifulSoup
-from urllib.parse import urljoin
+import feedparser
 
-# Yahoo Finance News 台灣版網址
-URL = "https://tw.stock.yahoo.com/news/"
+# Yahoo News RSS URL
+RSS_URL = "https://www.yahoo.com/news/rss"
+OUTPUT_FILE = "headlines.txt"
 
-# 發送 HTTP GET 請求
-headers = {"User-Agent": "Mozilla/5.0"}
-response = requests.get(URL, headers=headers)
+def fetch_yahoo_news():
+    """抓取 Yahoo News RSS 並儲存到檔案"""
+    feed = feedparser.parse(RSS_URL)
 
-# 檢查請求是否成功
-if response.status_code == 200:
-    soup = BeautifulSoup(response.text, "html.parser")
+    if not feed.entries:
+        print("⚠️ 沒有找到任何新聞標題，請檢查 RSS 來源！")
+        return
+    
+    print("✅ 成功抓取 Yahoo News 頭條新聞！\n")
 
-    # 找到所有新聞標題
-    headlines = soup.select("h3.Mt\(0\).Mb\(8px\) a")
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        for i, entry in enumerate(feed.entries[:10], 1):
+            headline = f"{i}. {entry.title}\n{entry.link}\n\n"
+            f.write(headline)
 
-    if not headlines:
-        print("⚠️ 沒有找到任何新聞標題，請檢查 HTML 結構！")
-
-    # 儲存標題到 headlines.txt
-    with open("headlines.txt", "w", encoding="utf-8") as f:
-        for headline in headlines:
-            title = headline.text.strip()
-            link = urljoin(URL, headline["href"])  # 確保 URL 正確
-            f.write(f"{title}\n{link}\n\n")
-
-    print("✅ 成功抓取 Yahoo Finance News 頭條新聞！")
-
-else:
-    print(f"❌ 無法取得網頁，狀態碼: {response.status_code}")
+if __name__ == "__main__":
+    fetch_yahoo_news()
