@@ -1,1 +1,1 @@
-# yahoo-finance-scraper
+# github-actions-scraper
