@@ -2,8 +2,8 @@ name: Yahoo Finance Scraper
 
 on:
   schedule:
-    - cron: "0 12 * * *"  # 每天 UTC 12:00 自動執行
-  workflow_dispatch:  # 允許手動觸發
+    - cron: '0 * * * *'  # 每小時執行一次
+  workflow_dispatch:  # 允許手動執行
 
 jobs:
   scrape:
@@ -12,21 +12,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.x'
 
       - name: Install Dependencies
-        run: pip install requests beautifulsoup4
+        run: pip install beautifulsoup4 requests
 
       - name: Run Scraper
         run: python scraper.py
 
       - name: Commit and Push Results
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add headlines.txt
-          git commit -m "Update Yahoo Finance Headlines"
-          git push
+          git commit -m "Update Yahoo Finance Headlines" || echo "No changes to commit"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git main
