@@ -1,5 +1,15 @@
-News - https://www.yahoo.com/
-Life - https://www.yahoo.com/lifestyle/
-Entertainment - https://www.yahoo.com/entertainment/
-Finance - https://finance.yahoo.com/
-Sports - https://sports.yahoo.com/
+News
+https://finance.yahoo.comhttps://www.yahoo.com/
+
+Life
+https://finance.yahoo.comhttps://www.yahoo.com/lifestyle/
+
+Entertainment
+https://finance.yahoo.comhttps://www.yahoo.com/entertainment/
+
+Finance
+https://finance.yahoo.comhttps://finance.yahoo.com/
+
+Sports
+https://finance.yahoo.comhttps://sports.yahoo.com/
+
